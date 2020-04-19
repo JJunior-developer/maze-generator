@@ -15,14 +15,14 @@ namespace MazeGenerator
             private set { cellSize = value; }
         }
 
-        private int mazeWidth = 10;
+        private int mazeWidth = 25;
         public int MazeWidth
         {
             get { return mazeWidth; }
             private set { mazeWidth = value; }
         }
 
-        private int mazeHeight = 10;
+        private int mazeHeight = 25;
         public int MazeHeight
         {
             get { return mazeHeight; }

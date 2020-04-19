@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace MazeGenerator
 {
@@ -33,110 +34,121 @@ namespace MazeGenerator
 
             maze = createMazePath(maze);
 
-            Console.WriteLine("Cell 1");
-            Console.WriteLine("North:" + maze[0,0].WallNorth);
-            Console.WriteLine("East:" + maze[0, 0].WallEast);
-            Console.WriteLine("South:" + maze[0, 0].WallSouth);
-            Console.WriteLine("West:" + maze[0, 0].WallWest);
-
-            Console.WriteLine("\nCell ->");
-            Console.WriteLine("North:" + maze[0, 1].WallNorth);
-            Console.WriteLine("East:" + maze[0, 1].WallEast);
-            Console.WriteLine("South:" + maze[0, 1].WallSouth);
-            Console.WriteLine("West:" + maze[0, 1].WallWest);
-
-            Console.WriteLine(@"Cell \/");
-            Console.WriteLine("North:" + maze[1, 0].WallNorth);
-            Console.WriteLine("East:" + maze[1, 0].WallEast);
-            Console.WriteLine("South:" + maze[1, 0].WallSouth);
-            Console.WriteLine("West:" + maze[1, 0].WallWest);
-
-            Console.WriteLine(@"Cell ->\/");
-            Console.WriteLine("North:" + maze[1, 1].WallNorth);
-            Console.WriteLine("East:" + maze[1, 1].WallEast);
-            Console.WriteLine("South:" + maze[1, 1].WallSouth);
-            Console.WriteLine("West:" + maze[1, 1].WallWest);
-
-
-
             return maze;
         }
+
 
         private cell[,] createMazePath(cell[,] grid)
         {
             Random rand = new Random();
             List<char> possibleNeighbors;
+            Stack availableNodes = new Stack();
 
-            int currentY = 0;
-            int currentX = 0;
+            coords currentPosition = new coords(0, 0);
+            grid[currentPosition.Y, currentPosition.X].Visited = true;
 
-            while ((possibleNeighbors = unvisitedNeighbors(currentY, currentX, ref grid)).Count > 0)
+            do
             {
-                grid[currentY, currentX].Visited = true;
-
-                int nextIteration = rand.Next(0, possibleNeighbors.Count);
-                char move = possibleNeighbors[nextIteration];
-                
-                switch (move)
+                while ((possibleNeighbors = unvisitedNeighbors(currentPosition, ref grid)).Count > 0)
                 {
-                    case 'N':
-                        Console.WriteLine("North");
-                        grid[currentY, currentX].WallNorth = false;
-                        currentY--;
-                        grid[currentY, currentX].WallSouth = false;
-                        break;
+                    if (possibleNeighbors.Count > 1)
+                    {
+                        coords copy = new coords(currentPosition.X, currentPosition.Y);
+                        availableNodes.Push(copy);
+                    }
 
-                    case 'E':
-                        Console.WriteLine("East");
-                        grid[currentY, currentX].WallEast = false;
-                        currentX++;
-                        grid[currentY, currentX].WallWest = false;
-                        break;
+                    //grid[currentPosition.Y, currentPosition.X].Visited = true;
 
-                    case 'S':
-                        Console.WriteLine("South");
-                        grid[currentY, currentX].WallSouth = false;
-                        currentY++;
-                        grid[currentY, currentX].WallNorth = false;
-                        break;
+                    int nextIteration = rand.Next(0, possibleNeighbors.Count);
+                    char move = possibleNeighbors[nextIteration];
 
-                    case 'W':
-                        Console.WriteLine("West");
-                        grid[currentY, currentX].WallWest = false;
-                        currentX--;
-                        grid[currentY, currentX].WallEast = false;
-                        break;
+                    switch (move)
+                    {
+                        case 'N':
+                            //Console.WriteLine("North");
+                            grid[currentPosition.Y, currentPosition.X].WallNorth = false;
+                            currentPosition.Y--;
+                            grid[currentPosition.Y, currentPosition.X].WallSouth = false;
+                            break;
+
+                        case 'E':
+                            //Console.WriteLine("East");
+                            grid[currentPosition.Y, currentPosition.X].WallEast = false;
+                            currentPosition.X++;
+                            grid[currentPosition.Y, currentPosition.X].WallWest = false;
+                            break;
+
+                        case 'S':
+                            //Console.WriteLine("South");
+                            grid[currentPosition.Y, currentPosition.X].WallSouth = false;
+                            currentPosition.Y++;
+                            grid[currentPosition.Y, currentPosition.X].WallNorth = false;
+                            break;
+
+                        case 'W':
+                            //Console.WriteLine("West");
+                            grid[currentPosition.Y, currentPosition.X].WallWest = false;
+                            currentPosition.X--;
+                            grid[currentPosition.Y, currentPosition.X].WallEast = false;
+                            break;
+                    }
+                    grid[currentPosition.Y, currentPosition.X].Visited = true;
                 }
+                currentPosition = (coords)availableNodes.Pop();
             }
+            while (availableNodes.Count > 0);
 
             return grid;
         }
 
-        private List<char> unvisitedNeighbors(int currentY, int currentX, ref cell[,] grid)
+        private List<char> unvisitedNeighbors(coords current, ref cell[,] grid)
         {
             List<char> availableNeighbors = new List<char>();
 
-            if (currentY > 0)
+            if (current.Y > 0)
             {
-                if (!grid[currentY - 1, currentX].Visited) { availableNeighbors.Add('N'); }
+                if (!grid[current.Y - 1, current.X].Visited) { availableNeighbors.Add('N'); }
             }
 
-            if (currentX < settings.MazeWidth - 1)
+            if (current.X < settings.MazeWidth - 1)
             {
-                if (!grid[currentY, currentX + 1].Visited) { availableNeighbors.Add('E'); }
+                if (!grid[current.Y, current.X + 1].Visited) { availableNeighbors.Add('E'); }
             }
 
-            if (currentY < settings.MazeHeight - 1)
+            if (current.Y < settings.MazeHeight - 1)
             {
-                if (!grid[currentY + 1, currentX].Visited) { availableNeighbors.Add('S'); }
+                if (!grid[current.Y + 1, current.X].Visited) { availableNeighbors.Add('S'); }
             }
 
-            if (currentX > 0)
+            if (current.X > 0)
             {
-                if (!grid[currentY, currentX - 1].Visited) { availableNeighbors.Add('W'); }
+                if (!grid[current.Y, current.X - 1].Visited) { availableNeighbors.Add('W'); }
             }
 
             return availableNeighbors;
+        }
+    }
+
+    class coords
+    {
+        public coords(int x, int y)
+        {
+            xPositon = x;
+            yPositon = y;
+        }
+
+        private int xPositon;
+        public int X
+        {
+            get { return xPositon; }
+            set { xPositon = value; }
+        }
+
+        private int yPositon;
+        public int Y
+        {
+            get { return yPositon; }
+            set { yPositon = value; }
         }
     }
 }

@@ -63,6 +63,17 @@ namespace MazeGenerator
             get { return visited; }
             set { visited = value; }
         }
+
+        public int numberOfWalls()
+        {
+            int numWalls = 0;
+            if (wallNorth) { numWalls++; }
+            if (wallEast) { numWalls++; }
+            if (wallSouth) { numWalls++; }
+            if (wallWest) { numWalls++; }
+
+            return numWalls;
+        }
     }
 
 }
