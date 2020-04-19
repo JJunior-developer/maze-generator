@@ -32,6 +32,29 @@ namespace MazeGenerator
                 if (cell.WallSouth) { e.Graphics.DrawLine(pen, cell.pointBL, cell.pointBR); }
                 if (cell.WallWest) { e.Graphics.DrawLine(pen, cell.pointTL, cell.pointBL); }
             }
+
+            Point[] points1 =
+            {
+                maze[0, 0].pointTL,
+                maze[0, 0].pointTR,
+                maze[0, 0].pointBR,
+                maze[0, 0].pointBL
+            };
+
+            Point[] points2 =
+            {
+                maze[24, 24].pointTL,
+                maze[24, 24].pointTR,
+                maze[24, 24].pointBR,
+                maze[24, 24].pointBL
+            };
+
+            SolidBrush brush = new SolidBrush(Color.Red);
+
+            e.Graphics.FillPolygon(brush, points1);
+
+            brush.Color = Color.Green;
+            e.Graphics.FillPolygon(brush, points2);
         }
     }
 }
