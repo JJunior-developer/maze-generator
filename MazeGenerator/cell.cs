@@ -26,28 +26,28 @@ namespace MazeGenerator
         public bool WallNorth
         {
             get { return wallNorth; }
-            private set { wallNorth = value; }
+            set { wallNorth = value; }
         }
 
         private bool wallEast = true;
         public bool WallEast
         {
             get { return wallEast; }
-            private set { wallEast = value; }
+            set { wallEast = value; }
         }
 
         private bool wallSouth = true;
         public bool WallSouth
         {
             get { return wallSouth; }
-            private set { wallSouth = value; }
+            set { wallSouth = value; }
         }
 
         private bool wallWest = true;
         public bool WallWest
         {
             get { return wallWest; }
-            private set { wallWest = value; }
+            set { wallWest = value; }
         }
 
         private int condition = 0;
@@ -55,6 +55,13 @@ namespace MazeGenerator
         {
             get { return condition; }
             private set { condition = value; }
+        }
+
+        private bool visited = false;
+        public bool Visited
+        {
+            get { return visited; }
+            set { visited = value; }
         }
     }
 

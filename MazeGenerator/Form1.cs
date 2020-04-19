@@ -30,7 +30,7 @@ namespace MazeGenerator
                 if (cell.WallNorth) { e.Graphics.DrawLine(pen, cell.pointTL, cell.pointTR); }
                 if (cell.WallEast) { e.Graphics.DrawLine(pen, cell.pointTR, cell.pointBR); }
                 if (cell.WallSouth) { e.Graphics.DrawLine(pen, cell.pointBL, cell.pointBR); }
-                if (cell.WallWest) { e.Graphics.DrawLine(pen, cell.pointTL, cell.pointTR); }
+                if (cell.WallWest) { e.Graphics.DrawLine(pen, cell.pointTL, cell.pointBL); }
             }
         }
     }
