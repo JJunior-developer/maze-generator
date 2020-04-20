@@ -10,22 +10,21 @@ namespace MazeGenerator
 {
     class mazeConstructor
     {
-        Settings settings = new Settings();
         public cell[,] constructMaze()
         {
 
-            cell[,] maze = new cell[settings.MazeHeight, settings.MazeWidth];
+            cell[,] maze = new cell[Settings.MazeHeight, Settings.MazeWidth];
 
-            for (int height = 0; height < settings.MazeHeight; height++)
+            for (int height = 0; height < Settings.MazeHeight; height++)
             {
-                for (int width = 0; width < settings.MazeWidth; width++)
+                for (int width = 0; width < Settings.MazeWidth; width++)
                 {
                     //Layout of cell
                     //a  b
                     //c  d
-                    Point a = new Point(width * settings.CellSize, height * settings.CellSize);
-                    Point b = new Point(a.X + settings.CellSize, height * settings.CellSize);
-                    Point c = new Point(a.X, a.Y + settings.CellSize);
+                    Point a = new Point(width * Settings.CellSize, height * Settings.CellSize);
+                    Point b = new Point(a.X + Settings.CellSize, height * Settings.CellSize);
+                    Point c = new Point(a.X, a.Y + Settings.CellSize);
                     Point d = new Point(b.X, c.Y);
 
                     maze[height, width] = new cell(a, b ,c ,d);
@@ -44,7 +43,7 @@ namespace MazeGenerator
             List<char> possibleNeighbors;
             Stack availableNodes = new Stack();
 
-            coords currentPosition = new coords(0, 0);
+            Point currentPosition = Settings.StartPoint;
             grid[currentPosition.Y, currentPosition.X].Visited = true;
 
             do
@@ -53,7 +52,7 @@ namespace MazeGenerator
                 {
                     if (possibleNeighbors.Count > 1)
                     {
-                        coords copy = new coords(currentPosition.X, currentPosition.Y);
+                        Point copy = new Point(currentPosition.X, currentPosition.Y);
                         availableNodes.Push(copy);
                     }
 
@@ -94,14 +93,14 @@ namespace MazeGenerator
                     }
                     grid[currentPosition.Y, currentPosition.X].Visited = true;
                 }
-                currentPosition = (coords)availableNodes.Pop();
+                currentPosition = (Point)availableNodes.Pop();
             }
             while (availableNodes.Count > 0);
 
             return grid;
         }
 
-        private List<char> unvisitedNeighbors(coords current, ref cell[,] grid)
+        private List<char> unvisitedNeighbors(Point current, ref cell[,] grid)
         {
             List<char> availableNeighbors = new List<char>();
 
@@ -110,12 +109,12 @@ namespace MazeGenerator
                 if (!grid[current.Y - 1, current.X].Visited) { availableNeighbors.Add('N'); }
             }
 
-            if (current.X < settings.MazeWidth - 1)
+            if (current.X < Settings.MazeWidth - 1)
             {
                 if (!grid[current.Y, current.X + 1].Visited) { availableNeighbors.Add('E'); }
             }
 
-            if (current.Y < settings.MazeHeight - 1)
+            if (current.Y < Settings.MazeHeight - 1)
             {
                 if (!grid[current.Y + 1, current.X].Visited) { availableNeighbors.Add('S'); }
             }
@@ -126,29 +125,6 @@ namespace MazeGenerator
             }
 
             return availableNeighbors;
-        }
-    }
-
-    class coords
-    {
-        public coords(int x, int y)
-        {
-            xPositon = x;
-            yPositon = y;
-        }
-
-        private int xPositon;
-        public int X
-        {
-            get { return xPositon; }
-            set { xPositon = value; }
-        }
-
-        private int yPositon;
-        public int Y
-        {
-            get { return yPositon; }
-            set { yPositon = value; }
         }
     }
 }
