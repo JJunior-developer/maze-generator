@@ -28,26 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.mazePanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
-            // panel1
+            // mazePanel
             // 
-            this.panel1.AutoSize = true;
-            this.panel1.Location = new System.Drawing.Point(10, 10);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(760, 760);
-            this.panel1.TabIndex = 0;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
+            this.mazePanel.AutoSize = true;
+            this.mazePanel.Location = new System.Drawing.Point(10, 10);
+            this.mazePanel.Name = "mazePanel";
+            this.mazePanel.Size = new System.Drawing.Size(760, 760);
+            this.mazePanel.TabIndex = 0;
+            this.mazePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             // 
-            // Form1
+            // Maze
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(774, 771);
-            this.Controls.Add(this.panel1);
-            this.Name = "Form1";
+            this.Controls.Add(this.mazePanel);
+            this.Name = "Maze";
             this.Text = "Form1";
+            this.Resize += new System.EventHandler(this.MazePanel_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -55,7 +56,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel mazePanel;
     }
 }
 
